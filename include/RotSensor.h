@@ -18,7 +18,7 @@
 #define ROTSENSOR_INSTANCES_MAX 8
 #define DEBOUNCE_FILTER_MS 10
 
-#define LOG
+// #define LOG
 
 typedef void IntHandler_t(void);
 
