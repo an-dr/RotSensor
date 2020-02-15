@@ -12,38 +12,43 @@
 
 #pragma once
 
-#include "to_implement.h"
-#include <Arduino.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #define ROTSENSOR_INSTANCES_MAX 8
 #define DEBOUNCE_FILTER_MS 10
 
+#define LOG
+
+typedef void IntHandler_t(void);
+
 class RotSensor {
-  public:
-    RotSensor() = default;
-    RotSensor(int pin,
-              const char *name,
-              unsigned long (*Millis)(void),
-              int (*PrintState)(const char *msg));
-            //   void (*IntrHdlr)(void))
-    static void * instances[ROTSENSOR_INSTANCES_MAX];
-    static uint32_t instances_count;
-    uint32_t instance_num;
+  private:
+    int inst_no;
     uint8_t rs_pin;
     uint32_t counter;
     uint64_t last_intr_time;
     const char *name;
     unsigned long (*GetMillis)(void);
-    int (*PrintState)(const char *msg);
-    // void (*RotSensor_InterruptionHandler)();
+  public:
+    static RotSensor *instances[ROTSENSOR_INSTANCES_MAX];
+    static void intr_handler(int rs_num);
+    static void intr0(void);
+    static void intr1(void);
+    static void intr2(void);
+    static void intr3(void);
+    static void intr4(void);
+    static void intr5(void);
+    static void intr6(void);
+    static void intr7(void);
 
     bool direction_backward;
-    // void Start(int pin,
-    //            const char *name,
-    //            unsigned long (*Millis)(void),
-    //            int (*PrintState)(const char *msg),
-    //            void (*IntrHdlr)(void));
-    uint32_t GetCounter();
-    static void PlaceMeToYourIntHandler(RotSensor *rs);
+
+    RotSensor() = default;
+    RotSensor(int pin,
+              const char *name,
+              unsigned long (*Millis)(void));
+    uint32_t GetCounter(void);
+    uint32_t GetPin(void);
+    IntHandler_t * GetIntrHandler();
 };
