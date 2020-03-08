@@ -79,7 +79,9 @@ void RotSensor::intr_handler(int rs_num) {
         // If interrupts come faster than debounce_filter_ms, assume it's a bounce and ignore
         if (now - rs->last_intr_time > DEBOUNCE_FILTER_MS) {
             rs->direction_backward ? rs->counter-- : rs->counter++;
-            printf("%s : %lu\n", rs->name, rs->counter);
+#       ifdef LOG
+            printf("[RS] %s : %lu\n", rs->name, rs->counter);
+#       endif
         }
         rs->last_intr_time = now;
     }
